@@ -1,0 +1,11 @@
+#Aqui va el mensaje de salida del sistema
+#Los parametros {username} y {cheers} seran reemplazados con el valor del sistema.
+out_message: "{username} ha enviado en total {cheers} Cheers."
+
+channel_config:
+  #Ingrese el nombre de usuario del BOT
+  bot_username: ""
+  #Ingrese la clave IRC del bot (Puede usar: https://www.twitchtools.com/chat-token) ejemplo: oauth:2e2e2s99g32uwjce22eextr0c65tews
+  bot_token: ""
+  #Ingrese el nombre del canal
+  channel_name: ""
