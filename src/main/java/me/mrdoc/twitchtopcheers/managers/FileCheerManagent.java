@@ -21,6 +21,9 @@ public class FileCheerManagent {
 
     public static void setTOP(HashMap<Integer,Cheering> top) {
         if(top.isEmpty()) {
+            for(int pos = 1; pos <= ConfigManager.getConfig().getTop_size(); pos++) {
+                setTOP(pos,null);
+            }
             return;
         }
         for(int pos : top.keySet()) {
@@ -33,11 +36,14 @@ public class FileCheerManagent {
             FileWriter fw = new FileWriter(filetops.get(pos));
             BufferedWriter bw = new BufferedWriter(fw);
 
-            String message = ConfigManager.getConfig().getOut_message();
+            String message = ConfigManager.getConfig().getEmpty_message();
 
-            message = message.replace("{pos}",Integer.toString(pos));
-            message = message.replace("{username}",cheer.getUsername());
-            message = message.replace("{cheers}",cheer.getTotalCheers() + "");
+            if(cheer != null) {
+                message = ConfigManager.getConfig().getOut_message();
+                message = message.replace("{pos}",Integer.toString(pos));
+                message = message.replace("{username}",cheer.getUsername());
+                message = message.replace("{cheers}",cheer.getTotalCheers() + "");
+            }
 
             PrintConsole.sendInfo("Mensaje en top_" + pos + ".txt fue reemplazado a: " + message);
 
