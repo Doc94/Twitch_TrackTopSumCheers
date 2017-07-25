@@ -1,6 +1,16 @@
-#Aqui va el mensaje de salida del sistema
-#Los parametros {username} y {cheers} seran reemplazados con el valor del sistema.
+#Configuracion
+#Asegurate de editar todo.
+
+#Los parametros {username} y {cheers} seran reemplazados con el valor del sistema en la config de messages.
+
+#Formato de mensaje cuando se asigna un top en un archivo
 out_message: "{username} ha enviado en total {cheers} Cheers."
+
+#
+empty_message: "Sin TOP."
+
+#Cantidad de lugares del TOP (eso sera la cantidad de archivos para cada top)
+top_size: 2
 
 channel_config:
   #Ingrese el nombre de usuario del BOT

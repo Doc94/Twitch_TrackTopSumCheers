@@ -9,7 +9,7 @@ import me.mrdoc.twitchtopcheers.managers.FileCheerManagent;
 import me.mrdoc.twitchtopcheers.utils.PrintConsole;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -27,7 +27,8 @@ public class Core {
     public static final ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
 
     public static void main(String[] args) throws IOException {
-        PrintConsole.sendStatus("Iniciando sistema...");
+        PrintConsole.sendStatus("Iniciando sistema de TOP por session de cheers.");
+        PrintConsole.sendStatus("Version: " + Core.class.getPackage().getImplementationVersion());
 
         loadConfig();
         loadFileTop();
@@ -45,6 +46,12 @@ public class Core {
         if(response.equalsIgnoreCase("y")) {
             PrintConsole.sendInfo("Borrando registros de TOP");
             DBCheerManagent.purgeTable();
+            FileCheerManagent.purgeFiles();
+            loadFileTop(); //reloadFile again
+        } else {
+            //Como no se borran registros, actualizamos los archivos con TOP.
+            HashMap<Integer,Cheering> cheersTOP = DBCheerManagent.getTOPCheers(ConfigManager.getConfig().getTop_size());
+            FileCheerManagent.setTOP(cheersTOP);
         }
 
         //testALL();
@@ -58,19 +65,16 @@ public class Core {
     }
 
     private static void testALL() {
+        PrintConsole.sendInfo("Corriendo test...");
         DBCheerManagent.addCheer("test",200);
         DBCheerManagent.addCheer("test2",800);
         DBCheerManagent.addCheer("test3",100);
 
-        ArrayList<Cheering> cheers = DBCheerManagent.getTOPCheers(1);
+        HashMap<Integer,Cheering> cheers = DBCheerManagent.getTOPCheers(ConfigManager.getConfig().getTop_size());
 
         PrintConsole.sendInfo("CANTIDAD TOP: " + cheers.size());
 
-        if(!cheers.isEmpty()) {
-            PrintConsole.sendInfo(cheers.get(0).getUsername() + " " + cheers.get(0).getTotalCheers());
-        }
-
-        FileCheerManagent.setTOP(DBCheerManagent.getTOPCheers(1).get(0));
+        FileCheerManagent.setTOP(DBCheerManagent.getTOPCheers(ConfigManager.getConfig().getTop_size()));
 
         //FileCheerManagent.setTOP(DBCheerManagent.getTOPCheers(1).get(0));
     }

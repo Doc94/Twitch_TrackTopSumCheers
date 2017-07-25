@@ -1,6 +1,7 @@
 package me.mrdoc.twitchtopcheers.bot;
 
 import me.mrdoc.twitchtopcheers.Core;
+import me.mrdoc.twitchtopcheers.bot.listener.GeneralListener;
 import me.mrdoc.twitchtopcheers.bot.listener.ManageCheerListener;
 import me.mrdoc.twitchtopcheers.managers.ConfigManager;
 import me.mrdoc.twitchtopcheers.utils.PrintConsole;
@@ -74,7 +75,6 @@ public class TwitchBOT {
                 .addCapHandler(new EnableCapHandler("twitch.tv/tags"))
                 .addCapHandler(new EnableCapHandler("twitch.tv/commands"))
 
-
                 .addServer("irc.twitch.tv")
 
                 .setName(ConfigManager.getConfig().getChannel_config().get("bot_username")) //Your twitch.tv username
@@ -82,6 +82,7 @@ public class TwitchBOT {
                 .addAutoJoinChannel(ConfigManager.getConfig().getChannel_config().get("channel_name"))
 
                 .addListener(new ManageCheerListener())
+                .addListener(new GeneralListener())
 
                 ;
     }

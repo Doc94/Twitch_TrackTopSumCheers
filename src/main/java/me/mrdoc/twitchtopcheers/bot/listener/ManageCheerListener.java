@@ -1,13 +1,14 @@
 package me.mrdoc.twitchtopcheers.bot.listener;
 
 import me.mrdoc.twitchtopcheers.classes.Cheering;
+import me.mrdoc.twitchtopcheers.managers.ConfigManager;
 import me.mrdoc.twitchtopcheers.managers.DBCheerManagent;
 import me.mrdoc.twitchtopcheers.managers.FileCheerManagent;
 import me.mrdoc.twitchtopcheers.utils.PrintConsole;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created on 19-07-2017 for twitchtopcheers.
@@ -33,9 +34,9 @@ public class ManageCheerListener extends ListenerAdapter {
         DBCheerManagent.addCheer(event.getUser().getNick(),cheerInMsg);
 
         //Recargamos TOP
-        ArrayList<Cheering> cheersTOP = DBCheerManagent.getTOPCheers(1);
+        HashMap<Integer,Cheering> cheersTOP = DBCheerManagent.getTOPCheers(ConfigManager.getConfig().getTop_size());
 
-        FileCheerManagent.setTOP(cheersTOP.get(0));
+        FileCheerManagent.setTOP(cheersTOP);
     }
 
 }

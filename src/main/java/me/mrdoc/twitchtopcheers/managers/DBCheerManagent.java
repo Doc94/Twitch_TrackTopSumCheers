@@ -2,12 +2,11 @@ package me.mrdoc.twitchtopcheers.managers;
 
 import me.mrdoc.twitchtopcheers.classes.Cheering;
 import me.mrdoc.twitchtopcheers.db.SQLiteSystem;
-import me.mrdoc.twitchtopcheers.utils.PrintConsole;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created on 20-07-2017 for TwitchGOTH_TOPSumCheers.
@@ -82,8 +81,8 @@ public class DBCheerManagent {
         return null;
     }
 
-    public static ArrayList<Cheering> getTOPCheers(int cant) {
-        ArrayList<Cheering> cheers = new ArrayList<>();
+    public static HashMap<Integer,Cheering> getTOPCheers(int cant) {
+        HashMap<Integer,Cheering> cheers = new HashMap<Integer,Cheering>();
 
         String command = "SELECT * FROM cheerings ORDER BY cheermount DESC LIMIT ? ;";
 
@@ -95,17 +94,15 @@ public class DBCheerManagent {
 
             ResultSet rs = psGetCheer.executeQuery();
 
+            int pos = 1;
+
             while(rs.next()) {
                 Cheering cheer = new Cheering(rs.getString("username"),rs.getInt("cheermount"));
-                cheers.add(cheer);
+                cheers.put(pos,cheer);
+                pos = pos + 1;
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-
-        if(cheers.isEmpty()) {
-            PrintConsole.sendError("No hay datos para cargar en el TOP, el sistema no puede continuar.");
-            System.exit(0);
         }
 
         return cheers;
